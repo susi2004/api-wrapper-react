@@ -13,5 +13,50 @@
     "id": 3,
     "name": "Priya",
     "role": "UI Designer"
+  },
+  {
+    "id": 4,
+    "name": "Arun",
+    "role": "Backend Developer"
+  },
+  {
+    "id": 5,
+    "name": "Kavin",
+    "role": "Angular Developer"
+  },
+  {
+    "id": 6,
+    "name": "Meena",
+    "role": "QA Tester"
+  },
+  {
+    "id": 7,
+    "name": "Vikram",
+    "role": "Full Stack Developer"
+  },
+  {
+    "id": 8,
+    "name": "Anjali",
+    "role": "Product Manager"
+  },
+  {
+    "id": 9,
+    "name": "Sanjay",
+    "role": "DevOps Engineer"
+  },
+  {
+    "id": 10,
+    "name": "Deepika",
+    "role": "Mobile App Developer"
+  },
+  {
+    "id": 11,
+    "name": "Naveen",
+    "role": "Database Administrator"
+  },
+  {
+    "id": 12,
+    "name": "Harini",
+    "role": "Software Engineer"
   }
 ]
