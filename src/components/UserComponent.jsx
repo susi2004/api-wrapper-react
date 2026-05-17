@@ -12,7 +12,7 @@ function UserComponent() {
       setError('');
       await new Promise((resolve) =>
         setTimeout(resolve, 1000)
-      );
+    );
       const response = await fetch('/src/assets/users.json');
       if (!response.ok) {
         throw new Error('Failed to fetch users');
