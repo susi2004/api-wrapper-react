@@ -1,65 +1,74 @@
-import { useEffect, useState } from 'react';
-import './toast.css';
+import React, { useState, useEffect } from "react";
+import "./Toast.css";
 
-const toastListeners = new Set();
+const listeners = new Set();
 
-function sendToast(type, message) {
-  toastListeners.forEach((listener) => listener({ type, message }));
+function notify(type, message) {
+  const payload = { type, message };
+  listeners.forEach((fn) => fn(payload));
 }
 
 export const toast = {
-  success: (message) => sendToast('success', message),
-  error: (message) => sendToast('error', message),
-  info: (message) => sendToast('info', message),
-  warning: (message) => sendToast('warning', message),
-  retry: (message) => sendToast('warning', message),
+  success: (msg) => notify("success", msg),
+  error: (msg) => notify("error", msg),
+  info: (msg) => notify("info", msg),
+  warning: (msg) => notify("warning", msg),
+  retry: (msg) => notify("warning", msg),
+  loading: (msg) => notify("loading", msg),
 };
 
-export function ToastContainer({ autoClose = 1600 }) {
-  const [toastList, setToastList] = useState([]);
+export function ToastContainer({ autoClose = 9000 }) {
+  const [toasts, setToasts] = useState([]);
 
   useEffect(() => {
-    const onToast = ({ type, message }) => {
+    function handler(t) {
       const id = Date.now() + Math.random();
-      setToastList((oldList) => [...oldList, { id, type, message }]);
+      setToasts((s) => [...s, { ...t, id }]);
 
-      if (autoClose) {
+      if (autoClose && t.type !== "loading") {
         setTimeout(() => {
-          setToastList((oldList) => oldList.filter((item) => item.id !== id));
+          setToasts((s) => s.filter((x) => x.id !== id));
         }, autoClose);
       }
-    };
-
-    toastListeners.add(onToast);
-    return () => {
-      toastListeners.delete(onToast);
-    };
+    }
+    listeners.add(handler);
+    return () => listeners.delete(handler);
   }, [autoClose]);
-
   return (
-    <div className="toast-box">
-      {toastList.map((item) => (
-        <div key={item.id} className={`toast-card ${item.type}`}>
+    <div className="toast-box"> 
+      {toasts.map((t) => (
+        <div key={t.id} className={`toast-card ${t.type}`}>
           <div className="toast-message">
-            <span className="toast-icon">
-              {item.type === 'success' && '✓'}
-              {item.type === 'error' && '✕'}
-              {item.type === 'warning' && '⚠'}
-              {item.type === 'info' && 'ℹ'}
-            </span>
-            <span>{item.message}</span>
+            {t.type !== "loading" && (
+              <span className="toast-icon">
+                {t.type === "success" && "✓"}
+                {t.type === "error" && "✕"}
+                {t.type === "warning" && "⚠"}
+                {t.type === "info" && "ℹ"}
+              </span>
+            )}
+            {t.type === "loading" && <span className="spinner"></span>}
+
+            <span>{t.message}</span>
           </div>
-          <button
-            type="button"
+
+          <span
             className="toast-close"
-            onClick={() => setToastList((oldList) => oldList.filter((toastItem) => toastItem.id !== item.id))}
+            onClick={() =>
+              setToasts((s) => s.filter((x) => x.id !== t.id))
+            }
           >
             ✕
-          </button>
+          </span>
+          {t.type !== "loading" && (
+            <div
+              className="toast-progress"
+              style={{ animationDuration: `${autoClose}ms` }}
+            />
+          )}
         </div>
       ))}
     </div>
   );
 }
-
 export default ToastContainer;
