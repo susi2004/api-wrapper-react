@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ApiWrapper.css";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
+import ToastContainer, { toast } from "./Toast";
 function ApiWrapper({
   title = "API Data",
   description = "User Component Loads",
@@ -40,7 +38,7 @@ function ApiWrapper({
   }, [search]);
 
   const handleRetry = () => {
-    toast.info("Retrying request...");
+    toast.retry("Retrying request...");
     if (onRetry) onRetry();
   };
 
