@@ -1,7 +1,13 @@
-import React from 'react';
-import UserComponent from './components/UserComponent.jsx';
+import UserComponent from './components/UserComponent';
+import ProductComponent from './components/ProductComponent';
+
 function App() {
-  return <UserComponent />;
+  return (
+    <>
+      <UserComponent />
+      <ProductComponent />
+    </>
+  );
 }
 
 export default App;
