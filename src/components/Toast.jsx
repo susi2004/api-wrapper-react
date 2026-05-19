@@ -1,56 +1,58 @@
 import { useEffect, useState } from 'react';
 import './toast.css';
 
-const listeners = new Set();
+const toastListeners = new Set();
 
-function notify(type, message) {
-  listeners.forEach((listener) => listener({ type, message }));
+function sendToast(type, message) {
+  toastListeners.forEach((listener) => listener({ type, message }));
 }
 
 export const toast = {
-  success: (message) => notify('success', message),
-  error: (message) => notify('error', message),
-  info: (message) => notify('info', message),
-  warning: (message) => notify('warning', message),
-  retry: (message) => notify('warning', message),
+  success: (message) => sendToast('success', message),
+  error: (message) => sendToast('error', message),
+  info: (message) => sendToast('info', message),
+  warning: (message) => sendToast('warning', message),
+  retry: (message) => sendToast('warning', message),
 };
 
 export function ToastContainer({ autoClose = 1600 }) {
-  const [toasts, setToasts] = useState([]);
+  const [toastList, setToastList] = useState([]);
 
   useEffect(() => {
-    const handler = (payload) => {
+    const onToast = ({ type, message }) => {
       const id = Date.now() + Math.random();
-      setToasts((prev) => [...prev, { ...payload, id }]);
+      setToastList((oldList) => [...oldList, { id, type, message }]);
 
       if (autoClose) {
         setTimeout(() => {
-          setToasts((prev) => prev.filter((toastItem) => toastItem.id !== id));
+          setToastList((oldList) => oldList.filter((item) => item.id !== id));
         }, autoClose);
       }
     };
 
-    listeners.add(handler);
-    return () => listeners.delete(handler);
+    toastListeners.add(onToast);
+    return () => {
+      toastListeners.delete(onToast);
+    };
   }, [autoClose]);
 
   return (
     <div className="toast-box">
-      {toasts.map((toastItem) => (
-        <div key={toastItem.id} className={`toast-card ${toastItem.type}`}>
+      {toastList.map((item) => (
+        <div key={item.id} className={`toast-card ${item.type}`}>
           <div className="toast-message">
             <span className="toast-icon">
-              {toastItem.type === 'success' && '✓'}
-              {toastItem.type === 'error' && '✕'}
-              {toastItem.type === 'warning' && '⚠'}
-              {toastItem.type === 'info' && 'ℹ'}
+              {item.type === 'success' && '✓'}
+              {item.type === 'error' && '✕'}
+              {item.type === 'warning' && '⚠'}
+              {item.type === 'info' && 'ℹ'}
             </span>
-            <span>{toastItem.message}</span>
+            <span>{item.message}</span>
           </div>
           <button
             type="button"
             className="toast-close"
-            onClick={() => setToasts((prev) => prev.filter((item) => item.id !== toastItem.id))}
+            onClick={() => setToastList((oldList) => oldList.filter((toastItem) => toastItem.id !== item.id))}
           >
             ✕
           </button>
