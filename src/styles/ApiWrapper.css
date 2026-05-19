@@ -1,0 +1,16 @@
+.api-page { width: min(1100px, 92vw); margin: 2rem auto; }
+.api-wrapper-card { background: #fff; border-radius: 16px; border: 1px solid #e8ebf1; box-shadow: 0 8px 30px rgba(16,24,40,.08); padding: 1.6rem; }
+.api-header h1 { margin: .3rem 0; }
+.api-header p { color: #5a6472; }
+.api-eyebrow { font-size: .8rem; color: #3b82f6; text-transform: uppercase; font-weight: 700; letter-spacing: .08em; }
+.toolbar { margin-top: 1rem; display: flex; gap: .8rem; }
+.search-box { flex: 1; border: 1px solid #d0d5dd; border-radius: 12px; padding: .75rem .9rem; }
+.retry-button,.pagination-controls button { border:none; background: linear-gradient(120deg,#2563eb,#3b82f6); color:#fff; border-radius:10px; padding:.72rem 1rem; font-weight:600; cursor:pointer; }
+.retry-button:disabled,.pagination-controls button:disabled { background:#c7d2fe; cursor:not-allowed; }
+.item-grid { margin-top:1rem; display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:1rem; }
+.status-box { margin-top:1rem; border-radius:12px; border:1px dashed #d6dae3; padding:1rem; text-align:center; }
+.error-box { border-color:#fecaca; color:#b91c1c; background:#fff1f2; }
+.empty-box { background:#f8fafc; }
+.spinner { width:30px; height:30px; margin:0 auto; border:3px solid #e2e8f0; border-top-color:#2563eb; border-radius:50%; animation: spin 1s linear infinite; }
+.pagination-controls { margin-top:1rem; display:flex; justify-content:center; align-items:center; gap:.8rem; }
+@keyframes spin { to { transform: rotate(360deg); } }

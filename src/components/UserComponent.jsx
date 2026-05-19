@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ApiWrapper from './ApiWrapper';
 
 function UserComponent() {
@@ -10,42 +10,37 @@ function UserComponent() {
     try {
       setLoading(true);
       setError('');
-      await new Promise((resolve) =>
-        setTimeout(resolve, 1000)
-    );
       const response = await fetch('/src/assets/users.json');
+
       if (!response.ok) {
-        throw new Error('Failed to fetch users');
+        throw new Error('Failed to fetch users data.');
       }
+
       const data = await response.json();
       setUsers(data);
-    } catch (err) {
-      setError(err.message);
+    } catch (fetchError) {
+      setError(fetchError.message);
       setUsers([]);
     } finally {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     fetchUsers();
   }, []);
+
   return (
     <ApiWrapper
-      title="Users List"
-      description="Users fetched from local Api."
+      type="users"
+      title="Users Directory"
+      description="Browse all team members with search, retry, and pagination support."
       data={users}
       loading={loading}
       error={error}
       onRetry={fetchUsers}
+      itemsPerPage={4}
       successMessage="Users loaded successfully!"
-      renderItem={(user) => (
-          <div>
-            <h2>{user.name}</h2>
-            <p>{user.role}</p>
-          </div>
-      )
-}
-      itemsPerPage={3}
     />
   );
 }
